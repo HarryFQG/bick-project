@@ -71,18 +71,74 @@
             <artifactId>druid</artifactId>
             <version>1.0.18</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+        <!--fastjson 的效率比jackson的高-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${fastjson}</version>
         </dependency>
 
+        <!--使用logback代替log4j,依赖两个jar包-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>1.1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.7</version>
+            <scope>test</scope>
+        </dependency>
+
+
+       <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-access</artifactId>
+            <version>1.1.7</version>
+       </dependency>
+       <dependency>
+           <groupId>commons-logging</groupId>
+           <artifactId>commons-logging</artifactId>
+           <version>1.2</version>
+       </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--加速开发的，解决日志记载，getter、setter
+                使用时,@Data注解在实体类上，可以不用写setter和getter
+                        在日志是：使用@slf4注解
+        -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.6</version>
+            <scope>provided</scope>
+        </dependency>
 
 
 
     </dependencies>
     <build>
+        <!--指定maven编译时要编译的文件，xml等-->
         <resources>
             <resource>
                 <directory>
@@ -90,6 +146,17 @@
                 </directory>
                 <includes>
                     <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>
+                    ${basedir}/src/main/resources
+                </directory>
+                <includes>
+                    <include>*.xml</include>
+                    <include>*.yml</include>
+                    <include>*.properties</include>
+                    <include>enc_pri</include>
                 </includes>
             </resource>
         </resources>
