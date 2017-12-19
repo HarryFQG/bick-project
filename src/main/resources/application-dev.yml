@@ -1,0 +1,9 @@
+
+#myBatis database pool
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_bick
+    username: root
+    password: 123456
+
+
