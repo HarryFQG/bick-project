@@ -1,5 +1,8 @@
 package com.it.project.securilty;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.crypto.Cipher;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -19,7 +22,7 @@ public class RSAUtil {
     /**
      * 公钥字符串
      */
-    public static final String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCKKIzWmb1Dm+cY1ypIwz0BvOcI0hZvu+UQVCxNXPlKKQC1ks5YZ5SyUb/NCCXhJ9oW2qOeI93tTBnycz0vgA8OQR8Za6CjLihjSiq43Pdmak8uqo4pzMxkH127YI+bozh3CJAm/fZRCLbvEqbd3DCRAmShOMxi0TmKgDhhaVfW8QIDAQAB";
+    public static final String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCJDV59k0MHgBHl/3FGNCuepG/hRTzhF2rTztnYlLEBE1HAaRYcJ+5Qn5tF3WKlxEH9kU57LgUWM67JdQRqj2kl531gxUAnHxUGujeQv6iv7cRPBZx/AlSaTfKvaWJTfEcbmSDlUr+4jmtPu1c7kCz4HHNXfeOuDxPjHHw1PKWPuwIDAQAB";
 
     // 私钥字符串
     public static  String PRIVATE_KEY ;
@@ -28,22 +31,26 @@ public class RSAUtil {
      * 读取私钥字符串
      */
     public static void convert() throws Exception {
-
+        Logger logger = LoggerFactory.getLogger(RSAUtil.class);
         byte[] data = null;
         try {
             InputStream is = RSAUtil.class.getResourceAsStream("/enc_pri");
             // 一次读完
-            int length = is.available();
+           int length = is.available();
             data = new byte[length];
             is.read(data);
-        }catch (Exception e){
+            logger.error("读取私钥失败");
 
+        }catch (Exception e){
+            logger.error("读取私钥失败", e.getMessage());
         }
 
         String dataStr = new String(data);
         try {
             PRIVATE_KEY = dataStr;
-        }catch (Exception e){}
+        }catch (Exception e){
+            logger.error("读取私钥失败", e.getMessage());
+        }
 
         if (null == PRIVATE_KEY) {
             throw new Exception("fail to private key");
@@ -60,24 +67,15 @@ public class RSAUtil {
     public static byte[] decryptByPrivateKey (byte[] data) throws Exception {
 
         convert();
-        /*byte[] keyBytes = Base64Util.decode(PRIVATE_KEY);
-        PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        Key privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
-
-        Cipher ci = Cipher.getInstance(keyFactory.getAlgorithm());
-        ci.init(Cipher.DECRYPT_MODE, privateKey);
-        return ci.doFinal(data);*/
         // 对密钥解密
         byte[] keyBytes = Base64Util.decode(PRIVATE_KEY);
-
         // 取得私钥
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
         Key privateKey = keyFactory.generatePrivate(pkcs8KeySpec);
-
-        // 对数据解密
-        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        // 对数据解密,下面两行等价
+        //Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
 
         return cipher.doFinal(data);
@@ -91,13 +89,7 @@ public class RSAUtil {
      * @throws Exception
      */
     public static byte[] encryptByPublicKey(byte[] data, String key) throws Exception {
-        /*byte[] bytes = Base64Util.decode(key);
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(bytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        Key publicKey = keyFactory.generatePublic(keySpec);
-        Cipher ci = Cipher.getInstance(keyFactory.getAlgorithm());
-        ci.init(Cipher.ENCRYPT_MODE, publicKey);
-        return ci.doFinal(data);*/
+
         // 对公钥解密
         byte[] keyBytes = Base64Util.decode(key);
 
@@ -125,9 +117,6 @@ public class RSAUtil {
      */
     public static void main(String[] args) throws Exception {
 
-        /**
-         * AES加密数据
-         */
         /*KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KEY_ALGORITHM);
         keyPairGenerator.initialize(1024);
         KeyPair keyPair = keyPairGenerator.generateKeyPair();
@@ -135,9 +124,9 @@ public class RSAUtil {
 
         PrivateKey aPrivate = keyPair.getPrivate();
         System.out.println("------------:"+Base64Util.encode(aPublic.getEncoded()));
-        System.out.println("------------:"+Base64Util.encode(aPrivate.getEncoded()));
+        System.out.println("------------:"+Base64Util.encode(aPrivate.getEncoded()));*/
 
-        *//*RSA加密AES的密钥*/
+        /*RSA加密AES的密钥*/
 
 
 
@@ -146,7 +135,7 @@ public class RSAUtil {
         byte[] bytes = encryptByPublicKey(str.getBytes("UTF-8"), PUBLIC_KEY);
         System.out.println("encode--------:"+bytes.toString());
         byte[] bytes1 = decryptByPrivateKey(bytes);
-        System.out.println("encode--------:"+new String(bytes1));
+        System.out.println("dncode--------:"+new String(bytes1));
     }
 
 }

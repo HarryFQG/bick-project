@@ -117,11 +117,18 @@
             <artifactId>commons-fileupload</artifactId>
             <version>1.3.1</version>
         </dependency>
+        <!--解决：Failed to load class "org.slf4j.impl.StaticLoggerBinder".异常-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.25</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+
 
         <!--加速开发的，解决日志记载，getter、setter
                 使用时,@Data注解在实体类上，可以不用写setter和getter
