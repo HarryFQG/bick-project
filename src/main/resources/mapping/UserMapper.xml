@@ -108,7 +108,7 @@
       #{userPhoto,jdbcType=VARCHAR}, #{userFlag,jdbcType=INTEGER}, #{userEnableflag,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.it.project.user.entity.User" >
+  <insert id="insertSelective" parameterType="com.it.project.user.entity.User" useGeneratedKeys="true" keyProperty="userId" >
     insert into tb_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -225,4 +225,13 @@
       user_enableflag = #{userEnableflag,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+
+
+  <select id="selectByMobile" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_user
+    where user_mobile = #{mobile,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

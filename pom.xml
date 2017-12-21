@@ -88,7 +88,6 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.1.7</version>
-            <scope>test</scope>
         </dependency>
 
 
@@ -129,17 +128,25 @@
             <scope>test</scope>
         </dependency>
 
+        <!--整合Redis有两种方式：
+                1.spring boot 2.jedis
+        -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+        </dependency>
 
         <!--加速开发的，解决日志记载，getter、setter
                 使用时,@Data注解在实体类上，可以不用写setter和getter
                         在日志是：使用@slf4注解
         -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
+        <!--<dependency>
+            <groupId>org.projectlombok</groupid>
             <artifactId>lombok</artifactId>
             <version>1.16.6</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency>-->
 
 
 

@@ -115,18 +115,18 @@ public class RSAUtil {
      * @param args
      * @throws NoSuchAlgorithmException
      */
-    public static void main(String[] args) throws Exception {
+ /*   public static void main(String[] args) throws Exception {
 
-        /*KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KEY_ALGORITHM);
+        *//*KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KEY_ALGORITHM);
         keyPairGenerator.initialize(1024);
         KeyPair keyPair = keyPairGenerator.generateKeyPair();
         PublicKey aPublic = keyPair.getPublic();
 
         PrivateKey aPrivate = keyPair.getPrivate();
         System.out.println("------------:"+Base64Util.encode(aPublic.getEncoded()));
-        System.out.println("------------:"+Base64Util.encode(aPrivate.getEncoded()));*/
+        System.out.println("------------:"+Base64Util.encode(aPrivate.getEncoded()));*//*
 
-        /*RSA加密AES的密钥*/
+        *//*RSA加密AES的密钥*//*
 
 
 
@@ -137,6 +137,6 @@ public class RSAUtil {
         byte[] bytes1 = decryptByPrivateKey(bytes);
         System.out.println("dncode--------:"+new String(bytes1));
     }
-
+*/
 }
 

@@ -75,29 +75,28 @@ public class AESUtil {
      */
     public static void main(String[] args) throws Exception {
         String key = "1234567890qwerty";
-        String token = "你好我们的同学";
-        System.out.println("source:"+token);
-        // 使用AES进行加密
+        String token = "{'mobile':'15527097306','code':'6666','platform':'android'}";
+        // 使用AES的key进行加密
         String s = encrypt(token, key);
-        System.out.println("encode:"+s);
+        System.out.println("encode--AESToken:"+s);
         // 使用AES进行解密
-        String s1 = decrypt(s, key);
-        System.out.println("decode:"+s1);
+        //String s1 = decrypt(s, key);
+        //System.out.println("decode:"+s1);
 
-        /*使用RSA的公钥加密AES的密钥*/
+        //*使用RSA的公钥加密AES的密钥*//*
         byte[] encrypt = RSAUtil.encryptByPublicKey(key.getBytes("UTF-8"), RSAUtil.PUBLIC_KEY);
-        System.out.println("加密之后的AES的密钥："+new String(encrypt,"UTF-8"));
+        //System.out.println("加密之后的AES的密钥："+new String(encrypt,"UTF-8"));
         // 使用AES加密RSA加密AES密钥后的密钥，因为不加密时他是一个乱码，在传输是存在传输问题
         String encode = Base64Util.encode(encrypt);
-
+        System.out.println("RSAtoAESofKey:-->"+encode);
         /* 服务端RSA解密AES的key*/
-        // 先使用AES解密经过AES加密的RSA加密AES密钥，还原为RSA加密AES时的乱码
+         /*先使用AES解密经过AES加密的RSA加密AES密钥，还原为RSA加密AES时的乱码*/
         byte[] decode = Base64Util.decode(encode);
-        // 使用RSA解密经过RSA加密的AES的密钥
+         /*使用RSA解密经过RSA加密的AES的密钥*/
         byte[] decrypt = RSAUtil.decryptByPrivateKey(decode);
-        // 还原出AES的密钥
+         /*还原出AES的密钥*/
         System.out.println(new String(decrypt,"UTF-8"));
-        // 使用AES解密密文得到明文
+         /*使用AES解密密文得到明文*/
         String s2 = decrypt(s, key);
         System.out.println("decode:"+s2);
     }
