@@ -31,8 +31,8 @@ spring:
 
 #mybatis scan xml
 mybatis:
-  mapper-locations: classpath:/mapping/*.xml
-  type-aliases-package: classpath:com.it.**.entity
+  mapper-locations: classpath:com.it.project.**/*.xml
+  type-aliases-package: classpath:com.it.project.**.entity
 
 
   #logback

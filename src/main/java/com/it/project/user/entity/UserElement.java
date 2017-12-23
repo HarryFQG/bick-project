@@ -38,14 +38,14 @@ public class UserElement {
      * 从UserElement转Map
      * @return
      */
-    public  Map<String, String> userElementToMap(){
+    public Map<String, String> userElementToMap(){
 
         Map<String, String> map = new HashMap<>();
         map.put("userId", this.userId+"");
         map.put("mobile", this.mobile);
         map.put("token", this.token);
         map.put("platform", this.platform);
-        map.put("pushChannelId", this.pushChannelId);
+
         if (null != this.pushUserId) {
             map.put("pushUserId", this.pushUserId);
         }
@@ -65,11 +65,11 @@ public class UserElement {
 
         UserElement userElement = new UserElement();
         userElement.setPlatform(map.get("platform"));
-        userElement.setMobile(map.get("userId"));
+        userElement.setUserId(Integer.parseInt(map.get("userId")));
         userElement.setMobile(map.get("mobile"));
-        userElement.setMobile(map.get("token"));
-        userElement.setMobile(map.get("pushChannelId"));
-        userElement.setMobile(map.get("pushUserId"));
+        userElement.setToken(map.get("token"));
+        userElement.setPushUserId(map.get("pushChannelId"));
+        userElement.setPushChannelId(map.get("pushUserId"));
         return userElement;
     }
 

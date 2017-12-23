@@ -50,6 +50,7 @@ public class RSAUtil {
             PRIVATE_KEY = dataStr;
         }catch (Exception e){
             logger.error("读取私钥失败", e.getMessage());
+            throw new RuntimeException(e);
         }
 
         if (null == PRIVATE_KEY) {

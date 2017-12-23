@@ -91,6 +91,14 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public void modifyNickNmae(User user) throws BickException {
+
+        userMapper.updateByPrimaryKeySelective(user);
+
+
+    }
+
     /**
      * 获得MD5的加密字符串
      * @param user

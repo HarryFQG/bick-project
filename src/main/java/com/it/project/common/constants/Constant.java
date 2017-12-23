@@ -28,4 +28,9 @@ public class Constant {
 
 
     /**---自定义状态码 end----**/
+    /**
+     * 请求头的名字
+     */
+    public static final String REQUEST_USER_TOKEN = "user_token";
+
 }

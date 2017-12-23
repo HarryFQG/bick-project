@@ -3,9 +3,11 @@ package com.it.project.user.controller;
 import com.it.project.common.constants.Constant;
 import com.it.project.common.exception.BickException;
 import com.it.project.common.response.APIResult;
+import com.it.project.common.rest.BaseController;
 import com.it.project.user.dao.UserMapper;
 import com.it.project.user.entity.LoginInfo;
 import com.it.project.user.entity.User;
+import com.it.project.user.entity.UserElement;
 import com.it.project.user.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseController{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
@@ -59,6 +61,37 @@ public class UserController {
         return apiResult;
 
     }
+
+
+    /**
+     * 修改用户的昵称
+     * 这里注意：用户的ID从后台获取，不在是前台获取，因为别人可以利用这个传别人的 ID 。从而修改别人的
+     * 其次，这里没有session，但是有token
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/modifyUser", method = RequestMethod.POST)
+    public APIResult modifyNickName(@RequestBody User user) {
+
+        APIResult resp = new APIResult() ;
+        try{
+
+            UserElement currentUser = getCurrentUser();
+            user.setUserId(currentUser.getUserId());
+            userService.modifyNickNmae(user);
+
+        }catch (BickException e) {
+            resp.setCode(Constant.RESP_STATUS_INTERNAL_ERROR);
+            resp.setMessage(e.getMessage());
+        }catch (Exception e){
+            LOGGER.error("Fail to login",e);
+            resp.setCode(Constant.RESP_STATUS_INTERNAL_ERROR);
+            resp.setMessage("内部错误");
+        }
+        return resp;
+
+    }
+
 
 
 }

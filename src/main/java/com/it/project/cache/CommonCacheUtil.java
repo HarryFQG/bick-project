@@ -6,9 +6,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Transaction;
+
+import java.util.Map;
 
 /**
  * @author fengqigui
@@ -132,12 +135,36 @@ public class CommonCacheUtil {
         Transaction trans = jedis.multi();
         trans.del(TOKEN_PREFIX+userElement.getToken());
         // 存对象。redis的hash类型
-        trans.hmset(TOKEN_PREFIX+userElement.getToken(), userElement.userElementToMap());
+        trans.hmset(TOKEN_PREFIX + userElement.getToken(), userElement.userElementToMap());
         trans.expire(TOKEN_PREFIX+userElement.getToken(),2592000);
         // 存set集合，防止用户在多台设备上登陆，
         trans.sadd(USER_PREFIX+userElement.getUserId(),userElement.getToken());
         trans.exec();
         jedis.close();
 
+    }
+
+    /**
+     * 根据用户的token获得用户
+     * @param token ： 用户的token
+     * @return
+     */
+    public UserElement getUserByToken(String token) {
+        UserElement userElement = null;
+        Jedis jedis = getJedis();
+        Assert.notNull(jedis, "jed's连接为空");
+        // 选择redis第0片区   分开存放list，set类型的key,总共有16片区。默认使用第0个
+        // select选择在哪里个区
+        jedis.select(0);
+        Map<String, String> map = jedis.hgetAll(TOKEN_PREFIX + token);
+        if(!CollectionUtils.isEmpty(map)){
+            userElement = UserElement.mapToUserElement(map);
+            jedis.close();
+            return userElement;
+        }else {
+            LOGGER.warn("fail to find cached element for token.");
+        }
+        jedis.close();
+        return userElement;
     }
 }

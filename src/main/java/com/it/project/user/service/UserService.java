@@ -1,6 +1,7 @@
 package com.it.project.user.service;
 
 import com.it.project.common.exception.BickException;
+import com.it.project.user.entity.User;
 
 public interface UserService {
 
@@ -13,4 +14,9 @@ public interface UserService {
     String login(String data, String key) throws BickException;
 
 
+    /**
+     * 修改用户昵称
+     * @param user
+     */
+    void modifyNickNmae(User user) throws BickException;
 }
