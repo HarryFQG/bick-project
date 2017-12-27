@@ -3,6 +3,8 @@ package com.it.project.common.constants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * 配置redis的连接参数的类
  * @author fengqigui
@@ -23,6 +25,18 @@ public class Parameters {
     @Value("${redis.max-wait-mills}")
     private int redisMaxWaitMills;
     /*--redis config end--*/
+
+
+    /*security config start*/
+    @Value("#{'${securit.noneSecurityPath}'.split(',')}")
+    private List<String> noneSecurityPath;
+
+
+
+    /*security config end*/
+
+
+
 
 
     public String getRedisHost() {
@@ -63,5 +77,13 @@ public class Parameters {
 
     public void setRedisMaxWaitMills(int redisMaxWaitMills) {
         this.redisMaxWaitMills = redisMaxWaitMills;
+    }
+
+    public List<String> getNoneSecurityPath() {
+        return noneSecurityPath;
+    }
+
+    public void setNoneSecurityPath(List<String> noneSecurityPath) {
+        this.noneSecurityPath = noneSecurityPath;
     }
 }

@@ -33,4 +33,13 @@ public class Constant {
      */
     public static final String REQUEST_USER_TOKEN = "user_token";
 
+    /**
+     * APP的版本
+     */
+    public static final String REQUEST_VERSION_KEY = "version";
+
+    /*-------------短信验证信息开始------------*/
+
+    /*-------------短信验证信息------------*/
+
 }

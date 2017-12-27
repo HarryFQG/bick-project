@@ -150,6 +150,7 @@ public class CommonCacheUtil {
      * @return
      */
     public UserElement getUserByToken(String token) {
+        int ia = 0;
         UserElement userElement = null;
         Jedis jedis = getJedis();
         Assert.notNull(jedis, "jed's连接为空");

@@ -3,8 +3,10 @@ package com.it.project.user.dao;
 import com.it.project.user.entity.User;
 import com.it.project.user.entity.UserExample;
 import java.util.List;
+
+
+
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 
 public interface UserMapper {
@@ -30,5 +32,5 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    User selectByMobile(String mobile);
+    User selectByMobile(String userMobile);
 }
