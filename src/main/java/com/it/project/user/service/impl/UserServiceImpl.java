@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.it.project.cache.CommonCacheUtil;
 import com.it.project.common.exception.BickException;
+import com.it.project.jms.SmsProcessor;
 import com.it.project.securilty.AESUtil;
 import com.it.project.securilty.Base64Util;
 import com.it.project.securilty.MD5Util;
@@ -12,6 +13,7 @@ import com.it.project.user.dao.UserMapper;
 import com.it.project.user.entity.User;
 import com.it.project.user.entity.UserElement;
 import com.it.project.user.service.UserService;
+import com.it.project.util.RandomNumCode;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +28,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    CommonCacheUtil cacheUtil;
+    private CommonCacheUtil cacheUtil;
+
+    @Autowired
+    private SmsProcessor smsProcessor;
+
+    private static final String VERIFYCODE_PREFIX = "verfiy.code";
     @Override
     public String login(String data, String key) throws BickException {
 
@@ -99,8 +106,31 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public void sendVercode(String userMobile, String ip) throws BickException {
+
+        String verCode = RandomNumCode.verCode();
+        int result = cacheUtil.cacheForVerificationCode(VERIFYCODE_PREFIX + userMobile, verCode, "reg", 60, ip);
+        if(result == 1){
+            LOGGER.info("当前验证码尚未过期，请稍后重试");
+            throw new BickException("当前验证码尚未过期，请稍后重试");
+        }else if (result == 2) {
+            LOGGER.info("验证码超过当日的上限次数");
+            throw new BickException("验证码超过当日的上限次数");
+        }else if (result == 3) {
+            LOGGER.info("验证码超过当日的上限次数",ip);
+            throw new BickException(ip+"验证码超过当日的上限次数");
+        }
+        LOGGER.info("sending verify code {} for phone", verCode, userMobile);
+
+        //TODO 验证通过，发送短信
+        //smsProcessor.sendSmsToQueue();
+
+
+    }
+
     /**
-     * 获得MD5的加密字符串
+     * 获得MD5的加密字符串,生成token
      * @param user
      * @return
      */

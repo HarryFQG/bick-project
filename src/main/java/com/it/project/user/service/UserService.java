@@ -19,4 +19,6 @@ public interface UserService {
      * @param user
      */
     void modifyNickNmae(User user) throws BickException;
+
+    void sendVercode(String userMobile, String ipFromRequest) throws BickException;
 }

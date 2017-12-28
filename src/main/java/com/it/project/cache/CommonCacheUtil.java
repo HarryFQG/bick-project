@@ -150,7 +150,6 @@ public class CommonCacheUtil {
      * @return
      */
     public UserElement getUserByToken(String token) {
-        int ia = 0;
         UserElement userElement = null;
         Jedis jedis = getJedis();
         Assert.notNull(jedis, "jed's连接为空");
@@ -167,5 +166,76 @@ public class CommonCacheUtil {
         }
         jedis.close();
         return userElement;
+    }
+
+    /**
+     *返回值：3：ip非法，超过当日验证的上限
+     *      2：手机号码超过当日验证的上限
+     *      1：验证码还没过期，
+     * @param key ：电话号码
+     * @param verCode ： 验证码
+     * @param type ：类型（注册，等）
+     * @param second ：多少时间过期
+     * @param ip ：ip地址
+     * 这里总共设置了两个键(key)：ip和手机号码
+     */
+    public int cacheForVerificationCode(String key, String verCode, String type, int second, String ip) {
+
+        Jedis jedis = getJedis();
+        Assert.notNull(jedis, "jed's连接为空");
+        // 选择redis第0片区   分开存放list，set类型的key,总共有16片区。默认使用第0个
+        // select选择在哪里个区
+        jedis.select(0);
+        String ipKey = "ip."+ip;
+        if (ip == null) {
+            return 3;
+        }else {
+            //检查同个IP发送的次数
+            String ipSendCount = jedis.get(ipKey);
+            try{
+                if(ipSendCount != null && Integer.parseInt(ipSendCount) >= 10){
+                    return 3;
+                }
+            }catch (NumberFormatException e){
+                LOGGER.error("Fail to process ip send count", e);
+                return 3;
+            }
+            long succ = jedis.setnx(key, verCode);
+            if(succ == 0) {
+                return 1;
+            }
+            // 检查同个手机号发送的次数
+            String sendCount = jedis.get(key + "." + type);
+            try{
+                if(sendCount != null && Integer.parseInt(sendCount) >=10){
+                    jedis.del(key);
+                    return  2;
+                }
+            }catch (NumberFormatException e){
+                LOGGER.error("Fail to process send count", e);
+                jedis.del(key);
+                return 2;
+            }
+
+            try{
+                jedis.expire(key, second);
+                long val = jedis.incr(key+"."+type);
+                if (val == 1) {
+                    jedis.expire(key+"."+type,86400);
+                }
+
+                jedis.incr(ipKey);
+                if(val == 1){
+                    jedis.expire(ipKey, 86400);
+                }
+            }catch (Exception e){
+                LOGGER.error("Fail to cache data into redis", e);
+            }
+
+        }
+
+        jedis.close();
+        return 0;
+
     }
 }

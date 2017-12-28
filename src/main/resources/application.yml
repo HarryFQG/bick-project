@@ -29,6 +29,8 @@ spring:
     username: root
     password: 123456
 
+
+
 #mybatis scan xml
 mybatis:
   mapper-locations: classpath:com.it.project.**/*.xml
@@ -46,4 +48,8 @@ redis:
   max-total: 10
   max-wait-mills: 3000
 
-
+#activemq
+activemq:
+  broker-url: tcp://localhost:61616
+  pool:
+    enabled: false

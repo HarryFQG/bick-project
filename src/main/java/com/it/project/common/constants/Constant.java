@@ -38,8 +38,21 @@ public class Constant {
      */
     public static final String REQUEST_VERSION_KEY = "version";
 
-    /*-------------短信验证信息开始------------*/
+    /*-------------秒滴SMS发短信start------------*/
+    public static final String MDSMS_ACCOUT_SID = "f7440674b9a74038b99203ecd48b3124";
 
-    /*-------------短信验证信息------------*/
+    public static final String MDSMS_AUTH_TOKEN = "15791718ba9348759ffeb53c39982cee";
+
+    /**
+     * 请求的URL
+     */
+    public static final String MDSMS_REST_URL = "https://api.miaodiyun.com/20150822";
+
+    /**
+     * 短信模板ID
+     */
+    public static final String MDSMS_VERCODE_TPKID = "132422946";
+    /*--------------发短信end------------*/
+
 
 }

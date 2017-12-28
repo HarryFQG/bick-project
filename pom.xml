@@ -142,6 +142,22 @@
             <version>2.9.0</version>
         </dependency>
 
+        <!--使用HttpCLient模拟get、post请求-->
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.4</version>
+        </dependency>
+
+        <!--整合ActiveMQ-->
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-activemq -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-activemq</artifactId>
+        </dependency>
+
+
         <!--加速开发的，解决日志记载，getter、setter
                 使用时,@Data注解在实体类上，可以不用写setter和getter
                         在日志是：使用@slf4注解
