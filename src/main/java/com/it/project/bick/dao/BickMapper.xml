@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.it.project.bick.dao.BickMapper" >
+  <resultMap id="BaseResultMap" type="com.it.project.bick.entity.Bick" >
+    <id column="bick_id" property="bickId" jdbcType="BIGINT" />
+    <result column="bick_number" property="bickNumber" jdbcType="BIGINT" />
+    <result column="bick_type" property="bickType" jdbcType="TINYINT" />
+    <result column="bick_enableUse" property="bickEnableuse" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    bick_id, bick_number, bick_type, bick_enableUse
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.it.project.bick.entity.BickExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_bick
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_bick
+    where bick_id = #{bickId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_bick
+    where bick_id = #{bickId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.it.project.bick.entity.BickExample" >
+    delete from tb_bick
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.it.project.bick.entity.Bick" >
+    insert into tb_bick (bick_id, bick_number, bick_type, 
+      bick_enableUse)
+    values (#{bickId,jdbcType=BIGINT}, #{bickNumber,jdbcType=BIGINT}, #{bickType,jdbcType=TINYINT}, 
+      #{bickEnableuse,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.it.project.bick.entity.Bick" >
+    insert into tb_bick
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bickId != null" >
+        bick_id,
+      </if>
+      <if test="bickNumber != null" >
+        bick_number,
+      </if>
+      <if test="bickType != null" >
+        bick_type,
+      </if>
+      <if test="bickEnableuse != null" >
+        bick_enableUse,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bickId != null" >
+        #{bickId,jdbcType=BIGINT},
+      </if>
+      <if test="bickNumber != null" >
+        #{bickNumber,jdbcType=BIGINT},
+      </if>
+      <if test="bickType != null" >
+        #{bickType,jdbcType=TINYINT},
+      </if>
+      <if test="bickEnableuse != null" >
+        #{bickEnableuse,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.it.project.bick.entity.BickExample" resultType="java.lang.Integer" >
+    select count(*) from tb_bick
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_bick
+    <set >
+      <if test="record.bickId != null" >
+        bick_id = #{record.bickId,jdbcType=BIGINT},
+      </if>
+      <if test="record.bickNumber != null" >
+        bick_number = #{record.bickNumber,jdbcType=BIGINT},
+      </if>
+      <if test="record.bickType != null" >
+        bick_type = #{record.bickType,jdbcType=TINYINT},
+      </if>
+      <if test="record.bickEnableuse != null" >
+        bick_enableUse = #{record.bickEnableuse,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_bick
+    set bick_id = #{record.bickId,jdbcType=BIGINT},
+      bick_number = #{record.bickNumber,jdbcType=BIGINT},
+      bick_type = #{record.bickType,jdbcType=TINYINT},
+      bick_enableUse = #{record.bickEnableuse,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.it.project.bick.entity.Bick" >
+    update tb_bick
+    <set >
+      <if test="bickNumber != null" >
+        bick_number = #{bickNumber,jdbcType=BIGINT},
+      </if>
+      <if test="bickType != null" >
+        bick_type = #{bickType,jdbcType=TINYINT},
+      </if>
+      <if test="bickEnableuse != null" >
+        bick_enableUse = #{bickEnableuse,jdbcType=TINYINT},
+      </if>
+    </set>
+    where bick_id = #{bickId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.it.project.bick.entity.Bick" >
+    update tb_bick
+    set bick_number = #{bickNumber,jdbcType=BIGINT},
+      bick_type = #{bickType,jdbcType=TINYINT},
+      bick_enableUse = #{bickEnableuse,jdbcType=TINYINT}
+    where bick_id = #{bickId,jdbcType=BIGINT}
+  </update>
+  <insert id="generateBickNum" parameterType="com.it.project.bick.entity.BickNum" useGeneratedKeys="true" keyProperty="bickNum">
+    insert into auto_inc_num(what_ever)VALUES (1)
+  </insert>
+</mapper>
