@@ -98,16 +98,16 @@ public class UserController extends BaseController{
 
     /**
      * 发送短信的controller
-     * @param user
+     * @param tel
      * @param request
      * @return
      */
     @RequestMapping("/sendVercode")
-    public APIResult modifyNickName(@RequestBody User user, HttpServletRequest request) {
+    public APIResult sendVercode(@RequestBody String tel, HttpServletRequest request) {
 
         APIResult resp = new APIResult() ;
         try{
-            userService.sendVercode(user.getUserMobile(), getIpFromRequest(request));
+            userService.sendVercode(tel, getIpFromRequest(request));
         } catch (Exception e){
             LOGGER.error("Fail to send sms vercode",e);
             resp.setCode(Constant.RESP_STATUS_INTERNAL_ERROR);

@@ -3,6 +3,7 @@ package com.it.project.user.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.it.project.cache.CommonCacheUtil;
+import com.it.project.common.constants.Constant;
 import com.it.project.common.exception.BickException;
 import com.it.project.jms.SmsProcessor;
 import com.it.project.securilty.AESUtil;
@@ -14,11 +15,16 @@ import com.it.project.user.entity.User;
 import com.it.project.user.entity.UserElement;
 import com.it.project.user.service.UserService;
 import com.it.project.util.RandomNumCode;
+import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.jms.Destination;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,6 +40,8 @@ public class UserServiceImpl implements UserService {
     private SmsProcessor smsProcessor;
 
     private static final String VERIFYCODE_PREFIX = "verfiy.code";
+    private static final String SMS_QUEUE = "sms.queue";
+
     @Override
     public String login(String data, String key) throws BickException {
 
@@ -122,9 +130,14 @@ public class UserServiceImpl implements UserService {
             throw new BickException(ip+"验证码超过当日的上限次数");
         }
         LOGGER.info("sending verify code {} for phone", verCode, userMobile);
-
-        //TODO 验证通过，发送短信
-        //smsProcessor.sendSmsToQueue();
+        Destination destination = new ActiveMQQueue(SMS_QUEUE);
+        Map<String, String> smsParm = new HashMap<>();
+        JSONObject jsonObject = JSONObject.parseObject(userMobile);
+        smsParm.put("mobile",(String)jsonObject.get("tel"));
+        smsParm.put("tplId", Constant.MDSMS_VERCODE_TPKID);
+        smsParm.put("vercode",verCode);
+        String message = JSON.toJSONString(smsParm);
+        smsProcessor.sendSmsToQueue(destination, message);
 
 
     }

@@ -20,15 +20,15 @@ import java.util.Map;
  * @Date 2017/12/28 20:34
  */
 @Service("verCodeService")
-public class MiaoDiSmsSender {
+public class MiaoDiSmsSender implements SmsSender{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MiaoDiSmsSender.class);
     /**
      * 发送短信的后缀
      */
     private static String operation = "/industrySMS/sendSMS";
-    //@Override
-    public static void sendSms(String phone, String tplId, String params) {
+    @Override
+    public  void sendSms(String phone, String tplId, String params) {
         try{
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
             String timestamp = sdf.format(new Date());
