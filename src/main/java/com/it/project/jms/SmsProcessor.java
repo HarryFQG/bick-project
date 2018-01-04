@@ -48,7 +48,6 @@ public class SmsProcessor {
     public void doSendSmsMessage(String text) {
         JSONObject jsonObject = JSON.parseObject(text);
         smsSend.sendSms(jsonObject.getString("mobile"),jsonObject.getString("tplId"),jsonObject.getString("vercode"));
-
     }
 
 }

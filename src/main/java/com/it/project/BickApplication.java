@@ -15,7 +15,7 @@ import org.springframework.http.converter.HttpMessageConverter;
  * @Date 2017/12/19 19:37
  */
 @SpringBootApplication
-@MapperScan(basePackages = "com.it.project.user.dao")
+@MapperScan(basePackages = "com.it.project.**.dao")
 @PropertySource(value = "classpath:parameter.properties")
 public class BickApplication {
 

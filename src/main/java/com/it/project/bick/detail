@@ -1,1 +1,4 @@
 整合mongodb,geohash，地理位置的搜索。
+Point类：地理坐标，经纬度
+BickLocation类：位置类
+BickGeoService类：mongo Geo 操作
