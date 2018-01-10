@@ -36,4 +36,6 @@ public interface BickMapper {
      * @return
      */
     Long generateBickNum(BickNum bickNum);
+
+    Bick selectByBikeNo(Long bickNumber);
 }

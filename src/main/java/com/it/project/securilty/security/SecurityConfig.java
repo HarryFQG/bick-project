@@ -68,6 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         // 忽略 OPTIONS方法的请求。OPTIONS：嗅探的一个方法
         web.ignoring().antMatchers(HttpMethod.OPTIONS,"/**");
     }
+
 }
 
 

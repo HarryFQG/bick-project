@@ -63,7 +63,9 @@ public class UserServiceImpl implements UserService {
             String mobile = jsonObject.getString("mobile");
             String authCode = jsonObject.getString("code");
             String platform = jsonObject.getString("platform");
-            if (StringUtils.isBlank(mobile) || StringUtils.isBlank(authCode)) {
+            String channelId = jsonObject.getString("channelId"); // 推送频道编码，单个设备
+
+            if (StringUtils.isBlank(mobile) || StringUtils.isBlank(authCode)|| StringUtils.isBlank(platform)|| StringUtils.isBlank(channelId)) {
                 throw new Exception();
             }
             // 去redis取验证码 ，比较手机号码和验证码是否匹配，匹配说明是本人。因为redi刚好有过期时间效果

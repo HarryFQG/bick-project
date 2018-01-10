@@ -2,6 +2,8 @@ package com.it.project.bick.service.impl;
 
 import com.it.project.bick.entity.BickLocation;
 import com.it.project.bick.entity.Point;
+import com.it.project.common.exception.BickException;
+import com.it.project.record.entity.RideContrail;
 import com.mongodb.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,7 @@ public class BickGeoService {
      * @param limit         ：每次显示几条
      * @param query         ： 查询条件
      * @param fields        ：限制显示的字段
+     *                      {location:{$nearSphere:{$geometry: {type:"Point",coordinates:[115.274955 , 30.835349]},$maxDistance: 500}},status:1}
      * @return sql：{location:{$nearSphere:{$geometry: {type:"Point",coordinates:[115.274955 , 30.835349]},$maxDistance: 50}},status:1}
      * 不能计算距离
      */
@@ -55,7 +58,8 @@ public class BickGeoService {
 
 
             query.put("status", 1);
-            fields = new BasicDBObject();
+            //fields = new BasicDBObject();
+            System.out.println("------>"+query.toString());
             List<DBObject> list = mongoTemplate.getCollection(collection).find(query, fields).limit(limit).toArray();
             List<BickLocation> result = new ArrayList<>();
             for (DBObject dbObject : list) {
@@ -130,13 +134,36 @@ public class BickGeoService {
         }
     }
 
-    public List<BickLocation> get() {
 
+    /**
+     * 坐标轨迹
+     * @param collection
+     * @param recordNo
+     * @return
+     * @throws BickException
+     */
+    public RideContrail rideContrail(String collection, String recordNo) throws BickException {
+        try {
+            DBObject object = mongoTemplate.getCollection(collection).findOne(new BasicDBObject("record_no", recordNo));
+            RideContrail rideContrail = new RideContrail();
+            rideContrail.setRideRecordNo((String) object.get("record_no"));
+            rideContrail.setBikeNo(((Integer) object.get("bike_no")).longValue());
+            BasicDBList locList = (BasicDBList) object.get("contrail");
+            List<Point> pointList = new ArrayList<>();
+            for (Object o : locList) {
+                BasicDBList locObj = (BasicDBList) ((BasicDBObject) o).get("loc");
+                Double[] temp=new Double[2];
+                locObj.toArray(temp);
+                Point point=new Point(temp);
+                pointList.add(point);
+            }
+            rideContrail.setContrail(pointList);
+            return rideContrail;
+        }catch (Exception e){
+            LOGGER.error("Fail to query ride contrail",e);
 
-        Cursor bick_geo = mongoTemplate.getCollection("bick_geo").find();
-
-        return null;
+            throw new BickException("查询单车轨迹失败");
+        }
     }
-
 
 }

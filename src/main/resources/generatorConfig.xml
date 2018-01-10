@@ -27,7 +27,7 @@
 		</javaTypeResolver>
 
 		<!-- targetProject:生成PO类的位置 -->
-		<javaModelGenerator targetPackage="com.it.project.bick.entity"
+		<javaModelGenerator targetPackage="com.it.project.fee.entity"
 			targetProject=".\src\main\java">
 			<!-- enableSubPackages:是否让schema作为包的后缀 -->
 			<property name="enableSubPackages" value="false" />
@@ -35,14 +35,14 @@
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
         <!-- targetProject:mapper映射文件生成的位置 -->
-		<sqlMapGenerator targetPackage="com.it.project.bick.dao"
+		<sqlMapGenerator targetPackage="com.it.project.fee.dao"
 			targetProject=".\src\main\java">
 			<!-- enableSubPackages:是否让schema作为包的后缀 -->
 			<property name="enableSubPackages" value="false" />
 		</sqlMapGenerator>
 		<!-- targetPackage：mapper接口生成的位置 -->
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="com.it.project.bick.dao"
+			targetPackage="com.it.project.fee.dao"
 			targetProject=".\src\main\java">
 			<!-- enableSubPackages:是否让schema作为包的后缀 -->
 			<property name="enableSubPackages" value="false" />
@@ -51,7 +51,7 @@
 		
 		<!-- 指定数据库表 -->
 
-		<table tableName="tb_bick" domainObjectName="Bick"></table>
+		<table tableName="ride_fee" domainObjectName="RideFee"></table>
 
 		
 	</context>

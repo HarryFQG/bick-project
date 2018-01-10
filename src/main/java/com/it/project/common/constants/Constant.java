@@ -55,4 +55,15 @@ public class Constant {
     /*--------------发短信end------------*/
 
 
+    /*--------------百度云推送----------*/
+    public static final String BAIDU_YUN_PUSH_SECRET_KEY="ANcqtKO100XnjhBIPIkjAxehYsldDEAi";
+
+    public static final String BAIDU_YUN_PUSH_API_KEY="HFEQ2EyIxaFEAza33U8Ljn0B";
+
+    public static final String BAIDU_YUN_PUSH_CHANNEL_URL="";
+
+
+    /*-------------配置结束---------*/
+
+
 }

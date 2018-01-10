@@ -196,4 +196,16 @@
   <insert id="generateBickNum" parameterType="com.it.project.bick.entity.BickNum" useGeneratedKeys="true" keyProperty="bickNum">
     insert into auto_inc_num(what_ever)VALUES (1)
   </insert>
+
+  <select id="selectByBikeNo" resultMap="BaseResultMap" parameterType="long">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM  tb_bick
+    WHERE bike_number = #{bickNumber} and status =1
+
+
+  </select>
+
+
+
 </mapper>

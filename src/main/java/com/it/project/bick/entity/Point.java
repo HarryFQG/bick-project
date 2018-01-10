@@ -18,6 +18,11 @@ public class Point {
         this.latitude = latitude;
     }
 
+    public Point(Double[] temp) {
+        this.longitude = temp[0];
+        this.latitude = temp[1];
+    }
+
     public double getLongitude() {
         return longitude;
     }
