@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.it.project.wallet.dao.WalletMapper" >
+  <resultMap id="BaseResultMap" type="com.it.project.wallet.entity.Wallet" >
+    <id column="wallet_id" property="walletId" jdbcType="BIGINT" />
+    <result column="wallet_userId" property="walletUserid" jdbcType="BIGINT" />
+    <result column="wallet_remainsum" property="walletRemainsum" jdbcType="DECIMAL" />
+    <result column="deposit" property="deposit" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    wallet_id, wallet_userId, wallet_remainsum, deposit
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.it.project.wallet.entity.WalletExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from wallet
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from wallet
+    where wallet_id = #{walletId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wallet
+    where wallet_id = #{walletId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.it.project.wallet.entity.WalletExample" >
+    delete from wallet
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.it.project.wallet.entity.Wallet" >
+    insert into wallet (wallet_id, wallet_userId, wallet_remainsum, 
+      deposit)
+    values (#{walletId,jdbcType=BIGINT}, #{walletUserid,jdbcType=BIGINT}, #{walletRemainsum,jdbcType=DECIMAL}, 
+      #{deposit,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.it.project.wallet.entity.Wallet" >
+    insert into wallet
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="walletId != null" >
+        wallet_id,
+      </if>
+      <if test="walletUserid != null" >
+        wallet_userId,
+      </if>
+      <if test="walletRemainsum != null" >
+        wallet_remainsum,
+      </if>
+      <if test="deposit != null" >
+        deposit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="walletId != null" >
+        #{walletId,jdbcType=BIGINT},
+      </if>
+      <if test="walletUserid != null" >
+        #{walletUserid,jdbcType=BIGINT},
+      </if>
+      <if test="walletRemainsum != null" >
+        #{walletRemainsum,jdbcType=DECIMAL},
+      </if>
+      <if test="deposit != null" >
+        #{deposit,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.it.project.wallet.entity.WalletExample" resultType="java.lang.Integer" >
+    select count(*) from wallet
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update wallet
+    <set >
+      <if test="record.walletId != null" >
+        wallet_id = #{record.walletId,jdbcType=BIGINT},
+      </if>
+      <if test="record.walletUserid != null" >
+        wallet_userId = #{record.walletUserid,jdbcType=BIGINT},
+      </if>
+      <if test="record.walletRemainsum != null" >
+        wallet_remainsum = #{record.walletRemainsum,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deposit != null" >
+        deposit = #{record.deposit,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update wallet
+    set wallet_id = #{record.walletId,jdbcType=BIGINT},
+      wallet_userId = #{record.walletUserid,jdbcType=BIGINT},
+      wallet_remainsum = #{record.walletRemainsum,jdbcType=DECIMAL},
+      deposit = #{record.deposit,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.it.project.wallet.entity.Wallet" >
+    update wallet
+    <set >
+      <if test="walletUserid != null" >
+        wallet_userId = #{walletUserid,jdbcType=BIGINT},
+      </if>
+      <if test="walletRemainsum != null" >
+        wallet_remainsum = #{walletRemainsum,jdbcType=DECIMAL},
+      </if>
+      <if test="deposit != null" >
+        deposit = #{deposit,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where wallet_id = #{walletId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.it.project.wallet.entity.Wallet" >
+    update wallet
+    set wallet_userId = #{walletUserid,jdbcType=BIGINT},
+      wallet_remainsum = #{walletRemainsum,jdbcType=DECIMAL},
+      deposit = #{deposit,jdbcType=DECIMAL}
+    where wallet_id = #{walletId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT <include refid="Base_Column_List"/>
+    FROM wallet
+    where userId=#{userId,jdbcType=BIGINT}
+
+  </select>
+
+
+</mapper>
